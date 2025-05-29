@@ -56,6 +56,9 @@ type config struct {
 	cors struct {
 		trustedOrigins []string
 	}
+	jwt struct {
+		secret string
+	}
 }
 
 // Define an application struct to hold the dependencies for our HTTP handlers, helpers,
@@ -115,6 +118,10 @@ func main() {
 		cfg.cors.trustedOrigins = strings.Fields(val)
 		return nil
 	})
+
+	// Parse the JWT signing secret from the command-line-flag. Notice that we leave the
+	// default value as the empty string if no flag is provided.
+	flag.StringVar(&cfg.jwt.secret, "jwt-secret", "", "JWT secret")
 
 	displayVersion := flag.Bool("version", false, "Display version and exit")
 
